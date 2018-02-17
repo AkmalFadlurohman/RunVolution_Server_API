@@ -69,8 +69,8 @@ app.post('/login', function(request, response) {
     client.query('SELECT password FROM "user" WHERE email = \'' + email + '\';', function(err, res) {
         if (err) throw err;
         else {
-            console.log("Found password : " + JSON.stringify(res));
-            if (res.password === password) {
+            //console.log("Found password : " + JSON.stringify(res));
+            if (res.rows.password === password) {
                 response.status(200).send("OK");
             } else {
                 response.status(200).send("Incorrect password or email");
