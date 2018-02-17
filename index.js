@@ -7,10 +7,6 @@ const baseURL       = ' https://runvolution.herokuapp.com/';
 const app           = express();
 const { Client }    = require('pg');
 
-const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: true,
-});
 //client.connect();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -36,7 +32,10 @@ app.post('/register', function(request, response) {
     var password = request.body.password;
     var name = request.body.name;
     var def_petname = "Bobby";
-
+    const client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: true,
+    });
     var petInsertQuery = 'INSERT INTO "pet" (name,level,xp) VALUES($1,$2,$3) RETURNING id';
     console.log("Debug1");
     client.connect();
@@ -68,7 +67,11 @@ app.post('/login', function(request, response) {
 
     var email = request.body.email;
     var password = request.body.password;
-
+    const client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: true,
+    });
+    client.connect();
     client.query('SELECT password FROM "user" WHERE email = ' + email + ';', function(err, res) {
         if (err) throw err;
         else {
@@ -87,7 +90,11 @@ app.get('/fetchuser', function(request, response) {
     console.log('\t' + JSON.stringify(request.body));
 
     var email = request.param('email');
-
+    const client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: true,
+    });
+    client.connect();
     client.query('SELECT * FROM "user" WHERE email = ' + email + ';', function(err, res) {
         if (err) throw err;
         else {
@@ -102,7 +109,11 @@ app.get('/fetchpet', function(request, response) {
     console.log('\t' + JSON.stringify(request.body));
 
     var petId = request.param('petid');
-
+    const client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: true,
+    });
+    client.connect();
     client.query('SELECT * FROM "pet" WHERE id = ' + id + ';', function(err, res) {
         if (err) throw err;
         else {
