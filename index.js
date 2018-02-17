@@ -36,7 +36,7 @@ app.post('/register', function(request, response) {
         connectionString: process.env.DATABASE_URL,
         ssl: true,
     });
-    var petInsertQuery = 'INSERT INTO "pet" (name,level,xp) VALUES($1,$2,$3) RETURNING id';
+    var petInsertQuery = 'INSERT INTO pet (name,level,xp) VALUES($1,$2,$3) RETURNING id';
     console.log("Debug1");
     client.connect();
     client.query(petInsertQuery, [def_petname,1,0], function(err, res) {
@@ -44,11 +44,8 @@ app.post('/register', function(request, response) {
         if (err) throw err;
         else {
             console.log("Debug3");
-            //client.end();
-            //client.connect();
             var maxPetId = res.rows[0].id;
             console.log("Inserted new pet record with id : " + maxPetId);
-            maxPetId++;
             var userInsertQuery = 'INSERT INTO "user" (email,password,name,previous_record,current_record,pet_id) VALUES ($1,$2,$3,$4,$5,$6)';
             client.query(userInsertQuery, [email,password,name,0,0,maxPetId], (err, res) => {
                 console.log("Debug4");
@@ -114,7 +111,7 @@ app.get('/fetchpet', function(request, response) {
         ssl: true,
     });
     client.connect();
-    client.query('SELECT * FROM "pet" WHERE id = ' + id + ';', function(err, res) {
+    client.query('SELECT * FROM pet WHERE id = ' + id + ';', function(err, res) {
         if (err) throw err;
         else {
             response.status(200).send(JSON.stringify(res));
