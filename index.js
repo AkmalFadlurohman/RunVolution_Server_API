@@ -11,7 +11,7 @@ const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
 });
-client.connect();
+//client.connect();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/static', express.static('static'));
