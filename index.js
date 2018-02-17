@@ -11,6 +11,7 @@ const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
 });
+client.connect();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/static', express.static('static'));
@@ -36,11 +37,12 @@ app.post('/register', function(request, response) {
     var name = request.body.name;
     var def_petname = "Bobby";
 
-    client.connect();
     var petInsertQuery = 'INSERT INTO "pet" (name,level,xp) VALUES($1,$2,$3) RETURNING id';
     client.query(petInsertQuery, [def_petname,1,0], function(err, res) {
         if (err) throw err;
         else {
+            client.end();
+            client.connect();
             var maxPetId = result.rows[0].id;
             console.log("Inserted new pet record with id : " + maxPetId);
             maxPetId++;
