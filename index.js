@@ -1,7 +1,6 @@
 // ============================================== Init Library ==============================================
 const express       = require('express');
 const bodyParser    = require('body-parser');
-const https         = require('https');
 const CronJob       = require('cron').CronJob;
 const fileSystem    = require('fs');
 const baseURL       = ' https://runvolution.herokuapp.com/';
@@ -80,7 +79,7 @@ app.get('/fetchuser', function(request, response) {
     console.log('Get new GET request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
     console.log('\t' + JSON.stringify(request.body));
 
-    var email = request.body.email;
+    var email = request.param('email');
 
     client.query('SELECT * FROM "user" WHERE email = ' + email + ';', function(err, res) {
         if (err) throw err;
@@ -95,7 +94,7 @@ app.get('/fetchpet', function(request, response) {
     console.log('Get new GET request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
     console.log('\t' + JSON.stringify(request.body));
 
-    var petId = request.body.id;
+    var petId = request.param('petid');
 
     client.query('SELECT * FROM "pet" WHERE id = ' + id + ';', function(err, res) {
         if (err) throw err;
