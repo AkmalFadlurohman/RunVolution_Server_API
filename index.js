@@ -46,7 +46,7 @@ app.post('/register', function(request, response) {
             console.log("Debug3");
             //client.end();
             //client.connect();
-            var maxPetId = result.rows[0].id;
+            var maxPetId = res.rows[0].id;
             console.log("Inserted new pet record with id : " + maxPetId);
             maxPetId++;
             var userInsertQuery = 'INSERT INTO "user" (email,password,name,previous_record,current_record,pet_id) VALUES ($1,$2,$3,$4,$5,$6)';
