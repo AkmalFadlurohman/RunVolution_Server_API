@@ -1,0 +1,21 @@
+{
+  "name": "runvolution",
+  "version": "1.0.0",
+  "description": "Backend for RunVolution app",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "keywords": [
+    "RunVolution"
+  ],
+  "author": "Akmal Fadlurohman",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cron": "^1.3.0",
+    "express": "^4.16.2",
+    "fs": "0.0.1-security",
+    "pg": "^7.4.1"
+  }
+}
