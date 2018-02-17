@@ -66,7 +66,7 @@ app.post('/login', function(request, response) {
     });
     client.connect();
     console.log('Query : SELECT password FROM "user" WHERE email = \'' + email + '\';');
-    client.query('SELECT password FROM "user" WHERE email = ' + email + ';', function(err, res) {
+    client.query('SELECT password FROM "user" WHERE email = \'' + email + '\';', function(err, res) {
         if (err) throw err;
         else {
             if (res.password === password) {
