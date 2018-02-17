@@ -65,7 +65,7 @@ app.post('/login', function(request, response) {
         ssl: true,
     });
     client.connect();
-    console.log('Query : SELECT password FROM "user" WHERE email = ' + email + ';');
+    console.log('Query : SELECT password FROM "user" WHERE email = \'' + email + '\';');
     client.query('SELECT password FROM "user" WHERE email = ' + email + ';', function(err, res) {
         if (err) throw err;
         else {
