@@ -41,6 +41,7 @@ app.post('/register', function(request, response) {
     client.query(petInsertQuery, [def_petname,1,0], function(err, res) {
         if (err) throw err;
         else {
+            console.log("Debug");
             client.end();
             client.connect();
             var maxPetId = result.rows[0].id;
