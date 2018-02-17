@@ -38,8 +38,8 @@ app.post('/register', function(request, response) {
     var def_petname = "Bobby";
 
     var petInsertQuery = 'INSERT INTO "pet" (name,level,xp) VALUES($1,$2,$3) RETURNING id';
+    console.log("Debug");
     client.query(petInsertQuery, [def_petname,1,0], function(err, res) {
-        console.log("Debug");
         if (err) throw err;
         else {
             client.end();
