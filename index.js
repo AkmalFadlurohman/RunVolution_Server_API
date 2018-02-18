@@ -43,7 +43,7 @@ app.post('/register', function(request, response) {
         else {
             var maxPetId = res.rows[0].id;
             console.log("Inserted new pet record with id : " + maxPetId);
-            var userInsertQuery = 'INSERT INTO "user" (email,password,name,prev_record,current_record,pet_id) VALUES ($1,$2,$3,$4,$5,$6)';
+            var userInsertQuery = 'INSERT INTO "user" (email,password,name,previous_record,current_record,pet_id) VALUES ($1,$2,$3,$4,$5,$6)';
             client.query(userInsertQuery, [email,password,name,0,0,maxPetId], (err, res) => {
                 if (err) throw err;
                 console.log("Inserted new user record with email : " + email + "and name : " + name);
@@ -160,8 +160,8 @@ app.patch('/updaterecord', function(request, response) {
         if (err) throw err;
         else {
             var prev_record = res.rows[0].current_record;
-            console.log('Query : UPDATE "user" SET prev_record = '+prev_record+',current_record = '+record+' WHERE email = \'' + email + '\';');
-            client.query('UPDATE "user" SET record = '+record+' WHERE email = \'' + email + '\';', function(err, res) {
+            console.log('Query : UPDATE "user" SET previous_record = '+prev_record+',current_record = '+record+' WHERE email = \'' + email + '\';');
+            client.query('UPDATE "user" SET previous_record = '+prev_record+',current_record = '+record+' WHERE email = \'' + email + '\';', function(err, res) {
                 if (err) throw err;
                 else {
                     console.log("Updated user record data with result object : " + JSON.stringify(res));
