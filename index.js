@@ -116,7 +116,7 @@ app.get('/fetchpet', function(request, response) {
         if (err) throw err;
         else {
             console.log("Found pet data : " + JSON.stringify(res.rows[0]));
-            response.status(200).send(JSON.stringify(res));
+            response.status(200).send(JSON.stringify(res.rows[0]));
         }
         client.end();
     });
