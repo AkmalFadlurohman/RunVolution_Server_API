@@ -43,8 +43,8 @@ app.post('/register', function(request, response) {
         else {
             var maxPetId = res.rows[0].id;
             console.log("Inserted new pet record with id : " + maxPetId);
-            var userInsertQuery = 'INSERT INTO "user" (email,password,name,previous_record,current_record,pet_id) VALUES ($1,$2,$3,$4,$5,$6)';
-            client.query(userInsertQuery, [email,password,name,0,0,maxPetId], (err, res) => {
+            var userInsertQuery = 'INSERT INTO "user" (email,password,name,record,pet_id) VALUES ($1,$2,$3,$4,$5,$6)';
+            client.query(userInsertQuery, [email,password,name,0,maxPetId], (err, res) => {
                 if (err) throw err;
                 console.log("Inserted new user record with email : " + email + "and name : " + name);
                 client.end();
@@ -121,6 +121,50 @@ app.get('/fetchpet', function(request, response) {
         client.end();
     });
 });
+
+app.get('/fetchpet', function(request, response) {
+    console.log('Get new GET request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
+    console.log('\t' + JSON.stringify(request.body));
+
+    var petId = request.param('petid');
+    const client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: true,
+    });
+    client.connect();
+    console.log('Query : SELECT * FROM pet WHERE id = \'' + petId + '\';');
+    client.query('SELECT * FROM pet WHERE id = \'' + petId + '\';', function(err, res) {
+        if (err) throw err;
+        else {
+            console.log("Found pet data : " + JSON.stringify(res.rows[0]));
+            response.status(200).send(JSON.stringify(res.rows[0]));
+        }
+        client.end();
+    });
+});
+
+app.patch('/updaterecord', function(request, response) {
+    console.log('Get new PATCH request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
+    console.log('\t' + JSON.stringify(request.body));
+
+    var email = request.param('email');
+    var record = request.param('record');
+    const client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: true,
+    });
+    client.connect();
+    console.log('Query : UPDATE "user" SET record = '+record+' WHERE email = \'' + email + '\';');
+    client.query('UPDATE "user" SET record = '+record+' WHERE email = \'' + email + '\';', function(err, res) {
+        if (err) throw err;
+        else {
+            console.log("Found pet data : " + JSON.stringify(res.rows[0]));
+            response.status(200).send("OK");
+        }
+        client.end();
+    });
+});
+
 
 
 
