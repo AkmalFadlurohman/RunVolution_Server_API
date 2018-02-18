@@ -154,15 +154,25 @@ app.patch('/updaterecord', function(request, response) {
         ssl: true,
     });
     client.connect();
-    console.log('Query : UPDATE "user" SET record = '+record+' WHERE email = \'' + email + '\';');
-    client.query('UPDATE "user" SET record = '+record+' WHERE email = \'' + email + '\';', function(err, res) {
+
+    console.log('Query : SELECT current_record FROM "user" WHERE email = \'' + email + '\';');
+    client.query('SELECT current_record FROM "user" WHERE email = \'' + email + '\';', function(err, res) {
         if (err) throw err;
         else {
-            console.log("Updated user record data with result object : " + JSON.stringify(res));
-            response.status(200).send("OK");
+            var prev_record = res.rows[0].current_record;
+            console.log('Query : UPDATE "user" SET prev_record = '+prev_record+',current_record = '+record+' WHERE email = \'' + email + '\';');
+            client.query('UPDATE "user" SET record = '+record+' WHERE email = \'' + email + '\';', function(err, res) {
+                if (err) throw err;
+                else {
+                    console.log("Updated user record data with result object : " + JSON.stringify(res));
+                    response.status(200).send("OK");
+                }
+                client.end();
+            });
         }
-        client.end();
     });
+    
+    
 });
 
 
