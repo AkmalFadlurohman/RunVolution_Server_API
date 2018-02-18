@@ -90,10 +90,12 @@ app.get('/fetchuser', function(request, response) {
         ssl: true,
     });
     client.connect();
-    client.query('SELECT * FROM "user" WHERE email = ' + email + ';', function(err, res) {
+    console.log('Query : SELECT * FROM "user" WHERE email = \'' + email + '\';');
+    client.query('SELECT * FROM "user" WHERE email = \'' + email + '\';', function(err, res) {
         if (err) throw err;
         else {
-            response.status(200).send(JSON.stringify(res));
+            console.log("Found user data : " + JSON.stringify(res.rows[0]));
+            response.status(200).send(JSON.stringify(res.rows[0]));
         }
         client.end();
     });
@@ -109,9 +111,11 @@ app.get('/fetchpet', function(request, response) {
         ssl: true,
     });
     client.connect();
-    client.query('SELECT * FROM pet WHERE id = ' + id + ';', function(err, res) {
+    console.log('Query : SELECT * FROM pet WHERE id = \'' + id + '\';');
+    client.query('SELECT * FROM pet WHERE id = \'' + id + '\';', function(err, res) {
         if (err) throw err;
         else {
+            console.log("Found pet data : " + JSON.stringify(res.rows[0]));
             response.status(200).send(JSON.stringify(res));
         }
         client.end();
