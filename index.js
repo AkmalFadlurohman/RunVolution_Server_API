@@ -158,7 +158,7 @@ app.patch('/updaterecord', function(request, response) {
     client.query('UPDATE "user" SET record = '+record+' WHERE email = \'' + email + '\';', function(err, res) {
         if (err) throw err;
         else {
-            console.log("Found pet data : " + JSON.stringify(res.rows[0]));
+            console.log("Updated user record data with result object : " + JSON.stringify(res));
             response.status(200).send("OK");
         }
         client.end();
