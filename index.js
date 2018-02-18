@@ -111,8 +111,8 @@ app.get('/fetchpet', function(request, response) {
         ssl: true,
     });
     client.connect();
-    console.log('Query : SELECT * FROM pet WHERE id = \'' + id + '\';');
-    client.query('SELECT * FROM pet WHERE id = \'' + id + '\';', function(err, res) {
+    console.log('Query : SELECT * FROM pet WHERE id = \'' + petId + '\';');
+    client.query('SELECT * FROM pet WHERE id = \'' + petId + '\';', function(err, res) {
         if (err) throw err;
         else {
             console.log("Found pet data : " + JSON.stringify(res.rows[0]));
