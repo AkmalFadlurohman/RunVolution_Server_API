@@ -71,6 +71,7 @@ app.post('/login', function(request, response) {
         else {
             console.log("Found password : " + JSON.stringify(res.rows[0].password));
             if (res.rows[0].password === password) {
+                console.log('Succesfully logged in user with email : ' + email);
                 response.status(200).send("OK");
             } else {
                 response.status(200).send("Incorrect password or email");
@@ -95,27 +96,6 @@ app.get('/fetchuser', function(request, response) {
         if (err) throw err;
         else {
             console.log("Found user data : " + JSON.stringify(res.rows[0]));
-            response.status(200).send(JSON.stringify(res.rows[0]));
-        }
-        client.end();
-    });
-});
-
-app.get('/fetchpet', function(request, response) {
-    console.log('Get new GET request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
-    console.log('\t' + JSON.stringify(request.body));
-
-    var petId = request.param('petid');
-    const client = new Client({
-        connectionString: process.env.DATABASE_URL,
-        ssl: true,
-    });
-    client.connect();
-    console.log('Query : SELECT * FROM pet WHERE id = \'' + petId + '\';');
-    client.query('SELECT * FROM pet WHERE id = \'' + petId + '\';', function(err, res) {
-        if (err) throw err;
-        else {
-            console.log("Found pet data : " + JSON.stringify(res.rows[0]));
             response.status(200).send(JSON.stringify(res.rows[0]));
         }
         client.end();
