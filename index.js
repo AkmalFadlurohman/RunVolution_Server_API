@@ -69,10 +69,14 @@ app.post('/login', function(request, response) {
     client.query('SELECT password FROM "user" WHERE email = \'' + email + '\';', function(err, res) {
         if (err) throw err;
         else {
-            console.log("Found password : " + JSON.stringify(res.rows[0].password));
-            if (res.rows[0].password === password) {
-                console.log('Succesfully logged in user with email : ' + email);
-                response.status(200).send("OK");
+            if (res.rows[0] != null && typeof(res.rows[0].password != 'undefined')) {
+                console.log("Found password : " + JSON.stringify(res.rows[0].password));
+                if (res.rows[0].password === password) {
+                    console.log('Succesfully logged in user with email : ' + email);
+                    response.status(200).send("OK");
+                } else {
+                    response.status(200).send("Incorrect password or email");
+                }
             } else {
                 response.status(200).send("Incorrect password or email");
             }
