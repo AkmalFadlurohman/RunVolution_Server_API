@@ -171,14 +171,14 @@ app.patch('/updatepetname', function(request, response) {
     });
     client.connect();
 
-    console.log('Query : UPDATE pet SET name = '+newName+' WHERE id = \'' + petId + '\';');
-        client.query('UPDATE pet SET name = '+newName+' WHERE id = \'' + petId + '\';', function(err, res) {
-            if (err) throw err;
-            else {
-                console.log("Updated pet name with result object : " + JSON.stringify(res));
-                response.status(200).send("OK");
-            }
-            client.end();
+    console.log('Query : UPDATE pet SET name = \''+newName+' \' WHERE id = \'' + petId + '\';');
+    client.query('UPDATE pet SET name = '+newName+' WHERE id = \'' + petId + '\';', function(err, res) {
+        if (err) throw err;
+        else {
+            console.log("Updated pet name with result object : " + JSON.stringify(res));
+            response.status(200).send("OK");
+        }
+        client.end();
     });
 });
 
