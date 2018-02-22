@@ -159,6 +159,29 @@ app.patch('/updaterecord', function(request, response) {
     
 });
 
+app.patch('/updatepetname', function(request, response) {
+    console.log('Get new PATCH request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
+    console.log('\t' + JSON.stringify(request.body));
+
+    var petId = request.param('petid');
+    var newName = request.param('name');
+    const client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: true,
+    });
+    client.connect();
+
+    console.log('Query : UPDATE pet SET name = '+newName+' WHERE id = \'' + petId + '\';');
+        client.query('UPDATE pet SET name = '+newName+' WHERE id = \'' + petId + '\';', function(err, res) {
+            if (err) throw err;
+            else {
+                console.log("Updated pet name with result object : " + JSON.stringify(res));
+                response.status(200).send("OK");
+            }
+            client.end();
+    });
+});
+
 
 
 
