@@ -182,8 +182,8 @@ app.post('/updatepetlevel', function(request, response) {
     console.log('Get new PATCH request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
     console.log('\t' + JSON.stringify(request.body));
 
-    var petId = request.param('petid');
-    var newLevel = request.param('level');
+    var petId = request.body.petid;
+    var newLevel = request.body.level;
     const client = new Client({
         connectionString: process.env.DATABASE_URL,
         ssl: true,
@@ -204,8 +204,8 @@ app.post('/updatepetxp', function(request, response) {
     console.log('Get new PATCH request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
     console.log('\t' + JSON.stringify(request.body));
 
-    var petId = request.param('petid');
-    var newXP = request.param('xp');
+    var petId = request.body.petid;
+    var newXP = request.body.xp;
     const client = new Client({
         connectionString: process.env.DATABASE_URL,
         ssl: true,
