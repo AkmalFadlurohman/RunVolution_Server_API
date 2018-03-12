@@ -36,9 +36,9 @@ app.post('/register', function(request, response) {
         connectionString: process.env.DATABASE_URL,
         ssl: true,
     });
-    var petInsertQuery = 'INSERT INTO pet (name,level,xp) VALUES($1,$2,$3) RETURNING id';
+    var petInsertQuery = 'INSERT INTO pet (name,level,xp,type,skin) VALUES($1,$2,$3) RETURNING id';
     client.connect();
-    client.query(petInsertQuery, [def_petname,1,0], function(err, res) {
+    client.query(petInsertQuery, [def_petname,1,0,-1,-1], function(err, res) {
         if (err) throw err;
         else {
             var maxPetId = res.rows[0].id;
@@ -155,10 +155,7 @@ app.patch('/updaterecord', function(request, response) {
             });
         }
     });
-    
-    
 });
-
 app.patch('/updatepetname', function(request, response) {
     console.log('Get new PATCH request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
     console.log('\t' + JSON.stringify(request.body));
@@ -181,6 +178,29 @@ app.patch('/updatepetname', function(request, response) {
         client.end();
     });
 });
+app.patch('/updatepetxp', function(request, response) {
+    console.log('Get new PATCH request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
+    console.log('\t' + JSON.stringify(request.body));
+
+    var petId = request.param('petid');
+    var newXP = request.param('xp');
+    const client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: true,
+    });
+    client.connect();
+
+    console.log('Query : UPDATE pet SET xp = \''+newXP+'\' WHERE id = \'' + petId + '\';');
+    client.query('UPDATE pet SET xp = \''+newXP+'\' WHERE id = \'' + petId + '\';', function(err, res) {
+        if (err) throw err;
+        else {
+            console.log("Updated pet experience to " + newXP + " with result object : " + JSON.stringify(res));
+            response.status(200).send("OK");
+        }
+        client.end();
+    });
+});
+
 
 
 
