@@ -36,7 +36,7 @@ app.post('/register', function(request, response) {
         connectionString: process.env.DATABASE_URL,
         ssl: true,
     });
-    var petInsertQuery = 'INSERT INTO pet (name,level,xp,type,skin) VALUES($1,$2,$3) RETURNING id';
+    var petInsertQuery = 'INSERT INTO pet (name,level,xp,type,skin) VALUES($1,$2,$3,$4,$5) RETURNING id';
     client.connect();
     client.query(petInsertQuery, [def_petname,1,0,-1,-1], function(err, res) {
         if (err) throw err;
