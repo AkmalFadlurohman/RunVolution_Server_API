@@ -178,7 +178,7 @@ app.patch('/updatepetname', function(request, response) {
         client.end();
     });
 });
-app.patch('/updatepetlevel', function(request, response) {
+app.put('/updatepetlevel', function(request, response) {
     console.log('Get new PATCH request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
     console.log('\t' + JSON.stringify(request.body));
 
@@ -200,7 +200,7 @@ app.patch('/updatepetlevel', function(request, response) {
         client.end();
     });
 });
-app.patch('/updatepetxp', function(request, response) {
+app.put('/updatepetxp', function(request, response) {
     console.log('Get new PATCH request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
     console.log('\t' + JSON.stringify(request.body));
 
@@ -222,7 +222,7 @@ app.patch('/updatepetxp', function(request, response) {
         client.end();
     });
 });
-app.patch('/updatepetappearance', function(request, response) {
+app.put('/updatepetappearance', function(request, response) {
     console.log('Get new PATCH request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
     console.log('\t' + JSON.stringify(request.body));
 
