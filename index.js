@@ -178,6 +178,28 @@ app.patch('/updatepetname', function(request, response) {
         client.end();
     });
 });
+app.patch('/updatepetlevel', function(request, response) {
+    console.log('Get new PATCH request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
+    console.log('\t' + JSON.stringify(request.body));
+
+    var petId = request.param('petid');
+    var newLevel = request.param('level');
+    const client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: true,
+    });
+    client.connect();
+
+    console.log('Query : UPDATE pet SET level = \''+newLevel+'\' WHERE id = \'' + petId + '\';');
+    client.query('UPDATE pet SET level = \''+newLevel+'\' WHERE id = \'' + petId + '\';', function(err, res) {
+        if (err) throw err;
+        else {
+            console.log("Updated pet level to " + newLevel + " with result object : " + JSON.stringify(res));
+            response.status(200).send("OK");
+        }
+        client.end();
+    });
+});
 app.patch('/updatepetxp', function(request, response) {
     console.log('Get new PATCH request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
     console.log('\t' + JSON.stringify(request.body));
@@ -195,6 +217,29 @@ app.patch('/updatepetxp', function(request, response) {
         if (err) throw err;
         else {
             console.log("Updated pet experience to " + newXP + " with result object : " + JSON.stringify(res));
+            response.status(200).send("OK");
+        }
+        client.end();
+    });
+});
+app.patch('/updatepetappearance', function(request, response) {
+    console.log('Get new PATCH request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
+    console.log('\t' + JSON.stringify(request.body));
+
+    var petId = request.param('petid');
+    var newType = request.param('type');
+    var newSkin = request.param('skin');
+    const client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: true,
+    });
+    client.connect();
+
+    console.log('Query : UPDATE pet SET type = '+newType+',skin = '+newSkin+' WHERE id = \'' + petId + '\';');
+    client.query('UPDATE pet SET type = '+newType+',skin = '+newSkin+' WHERE id = \'' + petId + '\';', function(err, res) {
+        if (err) throw err;
+        else {
+            console.log("Updated pet appearance with type " + newType + " and skin "+newSkin+" with result object : " + JSON.stringify(res));
             response.status(200).send("OK");
         }
         client.end();
