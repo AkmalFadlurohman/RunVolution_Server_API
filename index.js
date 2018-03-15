@@ -179,7 +179,7 @@ app.patch('/updatepetname', function(request, response) {
     });
 });
 app.post('/updatepetlevel', function(request, response) {
-    console.log('Get new PATCH request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
+    console.log('Get new POST request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
     console.log('\t' + JSON.stringify(request.body));
 
     var petId = request.body.petid;
@@ -201,7 +201,7 @@ app.post('/updatepetlevel', function(request, response) {
     });
 });
 app.post('/updatepetxp', function(request, response) {
-    console.log('Get new PATCH request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
+    console.log('Get new POST request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
     console.log('\t' + JSON.stringify(request.body));
 
     var petId = request.body.petid;
@@ -223,7 +223,7 @@ app.post('/updatepetxp', function(request, response) {
     });
 });
 app.post('/updatepetappearance', function(request, response) {
-    console.log('Get new PATCH request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
+    console.log('Get new POST request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
     console.log('\t' + JSON.stringify(request.body));
 
     var petId = request.body.petid;
@@ -245,7 +245,27 @@ app.post('/updatepetappearance', function(request, response) {
         client.end();
     });
 });
+app.post('/setconsumed', function(request, response) {
+    console.log('Get new POST request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
+    console.log('\t' + JSON.stringify(request.body));
 
+    var email = request.body.email;
+    const client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: true,
+    });
+    client.connect();
+
+    console.log('Query : UPDATE "user" SET previous_record = -1 WHERE email = \'' + email + '\';');
+    client.query('UPDATE "user" SET previous_record = -1 WHERE email = \'' + email + '\';', function(err, res) {
+        if (err) throw err;
+        else {
+            console.log("Set user record as consumed");
+            response.status(200).send("OK");
+        }
+        client.end();
+    });
+});
 
 
 
