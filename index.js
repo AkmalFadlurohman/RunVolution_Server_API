@@ -156,6 +156,50 @@ app.patch('/updaterecord', function(request, response) {
         }
     });
 });
+app.post('/updatepetappearance', function(request, response) {
+    console.log('Get new POST request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
+    console.log('\t' + JSON.stringify(request.body));
+
+    var petId = request.body.petid;
+    var newType = request.body.type;
+    var newSkin = request.body.skin;
+    const client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: true,
+    });
+    client.connect();
+
+    console.log('Query : UPDATE pet SET type = '+newType+',skin = '+newSkin+' WHERE id = \'' + petId + '\';');
+    client.query('UPDATE pet SET type = '+newType+',skin = '+newSkin+' WHERE id = \'' + petId + '\';', function(err, res) {
+        if (err) throw err;
+        else {
+            console.log("Updated pet appearance with type " + newType + " and skin "+newSkin+" with result object : " + JSON.stringify(res));
+            response.status(200).send("OK");
+        }
+        client.end();
+    });
+});
+app.post('/setconsumed', function(request, response) {
+    console.log('Get new POST request from ' + request.originalUrl);
+    console.log('\t' + JSON.stringify(request.body));
+
+    var email = request.body.email;
+    const client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: true,
+    });
+    client.connect();
+
+    console.log('Query : UPDATE "user" SET previous_record = -1 WHERE email = \'' + email + '\';');
+    client.query('UPDATE "user" SET previous_record = $1 WHERE email = \'' + email + '\';',[-1], function(err, res) {
+        if (err) throw err;
+        else {
+            console.log("Set user record as consumed");
+            response.status(200).send("OK");
+        }
+        client.end();
+    });
+});
 app.patch('/updatepetname', function(request, response) {
     console.log('Get new PATCH request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
     console.log('\t' + JSON.stringify(request.body));
@@ -217,50 +261,6 @@ app.post('/updatepetxp', function(request, response) {
         if (err) throw err;
         else {
             console.log("Updated pet experience to " + newXP + " with result object : " + JSON.stringify(res));
-            response.status(200).send("OK");
-        }
-        client.end();
-    });
-});
-app.post('/updatepetappearance', function(request, response) {
-    console.log('Get new POST request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
-    console.log('\t' + JSON.stringify(request.body));
-
-    var petId = request.body.petid;
-    var newType = request.body.type;
-    var newSkin = request.body.skin;
-    const client = new Client({
-        connectionString: process.env.DATABASE_URL,
-        ssl: true,
-    });
-    client.connect();
-
-    console.log('Query : UPDATE pet SET type = '+newType+',skin = '+newSkin+' WHERE id = \'' + petId + '\';');
-    client.query('UPDATE pet SET type = '+newType+',skin = '+newSkin+' WHERE id = \'' + petId + '\';', function(err, res) {
-        if (err) throw err;
-        else {
-            console.log("Updated pet appearance with type " + newType + " and skin "+newSkin+" with result object : " + JSON.stringify(res));
-            response.status(200).send("OK");
-        }
-        client.end();
-    });
-});
-app.post('/setconsumed', function(request, response) {
-    console.log('Get new POST request from ' + request.originalUrl + ' with type ' + request.get('content-type'));
-    console.log('\t' + JSON.stringify(request.body));
-
-    var email = request.body.email;
-    const client = new Client({
-        connectionString: process.env.DATABASE_URL,
-        ssl: true,
-    });
-    client.connect();
-
-    console.log('Query : UPDATE "user" SET previous_record = -1 WHERE email = \'' + email + '\';');
-    client.query('UPDATE "user" SET previous_record = -1 WHERE email = \'' + email + '\';', function(err, res) {
-        if (err) throw err;
-        else {
-            console.log("Set user record as consumed");
             response.status(200).send("OK");
         }
         client.end();
